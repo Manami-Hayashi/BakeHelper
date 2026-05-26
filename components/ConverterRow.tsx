@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import UnitDropdown from "./UnitDropdown";
+import OptionDropdown from "./OptionDropdown";
 import type {Unit} from "../lib/units";
 
 type Props = {
@@ -24,10 +24,11 @@ export default function ConverterRow({
             placeholder="0"
             keyboardType="numeric"
             />
-            <UnitDropdown
-            selectedUnitId={unitId}
-            units={units}
-            onUnitChange={onUnitChange}
+            <OptionDropdown
+            selectedId={unitId}
+            options={units}
+            onChange={onUnitChange}
+            title="Select unit"
             />
         </View>
     );

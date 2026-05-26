@@ -2,23 +2,28 @@ import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { Unit } from '../lib/units';
 
-type Props = {
-    selectedUnitId: string;
-    units: Unit[];
-    onUnitChange: (id: string) => void;
+export type Option = {
+  id: string;
+  label: string;
 }
 
-export default function UnitDropdown({ selectedUnitId, units, onUnitChange} : Props) {
+type Props = {
+    selectedId: string;
+    options: Option[];
+    onChange: (id: string) => void;
+    title?: string; // optional sheet title
+}
+
+export default function OptionDropdown({ selectedId, options, onChange, title ="Select an option", } : Props) {
     const [isOpen, setIsOpen] = useState(false);
     const insets = useSafeAreaInsets();
 
-    const selectedUnit = units.find((u) => u.id === selectedUnitId);
-    const selectedLabel = selectedUnit?.label ?? "";
+    const selected = options.find((o) => o.id === selectedId);
+    const selectedLabel = selected?.label ?? "";
 
     const handleSelect = (id: string) => {
-        onUnitChange(id);
+        onChange(id);
         setIsOpen(false);
     };
 
@@ -50,12 +55,12 @@ export default function UnitDropdown({ selectedUnitId, units, onUnitChange} : Pr
                         <Text style={styles.title}>Select unit</Text>
 
                         <ScrollView style={styles.list}>
-                            {units.map((unit) => {
-                                const isSelected = unit.id === selectedUnitId;
+                            {options.map((option) => {
+                                const isSelected = option.id === selectedId;
                                 return(
                                     <Pressable
-                                    key={unit.id}
-                                    onPress={() => handleSelect(unit.id)}
+                                    key={option.id}
+                                    onPress={() => handleSelect(option.id)}
                                     style={({ pressed }) => [
                                         styles.option,
                                         pressed && styles.optionPressed
@@ -65,7 +70,7 @@ export default function UnitDropdown({ selectedUnitId, units, onUnitChange} : Pr
                                             styles.optionText,
                                             isSelected && styles.optionTextSelected
                                         ]}>
-                                        {unit.label}    
+                                        {option.label}    
                                         </Text>
                                         {isSelected && (
                                             <MaterialCommunityIcons
