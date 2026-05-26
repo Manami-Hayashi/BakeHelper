@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import UnitDropdown from "./UnitDropdown";
 import type {Unit} from "../lib/units";
 
 type Props = {
@@ -24,15 +24,11 @@ export default function ConverterRow({
             placeholder="0"
             keyboardType="numeric"
             />
-            <Picker
-            selectedValue={unitId}
-            onValueChange={onUnitChange}
-            style={styles.picker}
-            >
-            {units.map((unit) => (
-                <Picker.Item key={unit.id} label={unit.label} value={unit.id} />
-            ))}
-            </Picker>
+            <UnitDropdown
+            selectedUnitId={unitId}
+            units={units}
+            onUnitChange={onUnitChange}
+            />
         </View>
     );
 }
@@ -42,14 +38,15 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
   },
   input: {
     width: 140,
-    height: 80,
+    height: 60,
     borderWidth: 2,
     borderColor: '#ddd',
     borderRadius: 12,
-    fontSize: 32,
+    fontSize: 28,
     textAlign: 'center',
     marginRight: 12,
     backgroundColor: '#fff',
@@ -57,9 +54,5 @@ const styles = StyleSheet.create({
   inputReadOnly: {
     backgroundColor: '#f0f0f0',
     color: '#333',
-  },
-  picker: {
-    width: 130,
-    height: 50,
-  },
+  }
 });
