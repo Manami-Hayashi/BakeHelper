@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { fahrenheitToCelsius, celsiusToFahrenheit } from '../lib/temperature';
 import DismissKeyboardScroll from '../components/DismissKeyboardScroll';
+import { formatNumber } from '../lib/units';
 
 export default function TemparetureScreen() {
     const [fahrenheit, setFahrenheit] = useState("");
@@ -23,7 +24,7 @@ export default function TemparetureScreen() {
         }
 
         const c = fahrenheitToCelsius(f);
-        setCelsius(c.toFixed(1));
+        setCelsius(formatNumber(c));
     };
 
     const handleCelsiusChange = (text: string) => {
@@ -41,7 +42,7 @@ export default function TemparetureScreen() {
         }
 
         const f = celsiusToFahrenheit(c);
-        setFahrenheit(f.toFixed(1));
+        setFahrenheit(formatNumber(f));
     };
 
     return (

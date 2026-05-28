@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { UNITS, convert, compatibleUnits } from '../lib/units';
+import { UNITS, convert, compatibleUnits, formatNumber } from '../lib/units';
 import DismissKeyboardScroll from '../components/DismissKeyboardScroll';
 import ConverterRow from '../components/ConverterRow';
 
@@ -29,7 +29,7 @@ export default function ConvertScreen() {
     if (isNaN(n)) return "";
     const result = convert(n, fromUnit, toUnit);
     if (result === null) return "—";
-    return result.toFixed(2);
+    return formatNumber(result);
   };
   
   const toValue = computeResult();

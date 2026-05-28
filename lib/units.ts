@@ -40,3 +40,31 @@ export const convert = (
 export const compatibleUnits = (selected: Unit) : Unit[] => {
     return UNITS.filter((u) => u.category === selected.category);
 };
+
+export const formatNumber = (n: number): string => {
+    if (isNaN(n)) return "";
+
+    const abs = Math.abs(n);
+    let result: string;
+
+    // very small values: 4 decimals
+    if (abs > 0 && abs < 0.01){
+        result = n.toFixed(4);
+    } 
+    // small values: 2 decimals
+    else if (abs < 10 ) {
+        result = n.toFixed(2);
+    }
+    // Medium values: 1 decimal
+    else if (abs < 100) {
+        result =  n.toFixed(1);
+    }
+    else {// large values: no decimals
+    return n.toFixed(0);
+    }
+
+    if (result.includes('.')){
+        result = result.replace(/0+$/, '').replace(/\.$/,'');
+    }
+    return result;
+};

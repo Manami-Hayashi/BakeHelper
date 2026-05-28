@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { UNITS } from '../lib/units';
+import { UNITS, formatNumber} from '../lib/units';
 import DismissKeyboardScroll from '../components/DismissKeyboardScroll';
 import ConverterRow from '../components/ConverterRow';
 
@@ -28,7 +28,7 @@ export default function PortionsScreen(){
     if (amount === "" || multiplier === null) return "";
     const n = parseFloat(amount);
     if (isNaN(n)) return "";
-    return (n * multiplier).toFixed(2);
+    return formatNumber(n * multiplier);
   };
 
   const scaledAmount = computeScaled();
@@ -64,7 +64,7 @@ export default function PortionsScreen(){
         </View>
 
         <Text style={styles.multiplier}>
-          {multiplier !== null ? `x ${multiplier.toFixed(2)}` : '-'}
+          {multiplier !== null ? `x ${formatNumber(multiplier)}` : '-'}
         </Text>
 
         <View style={styles.divider} />
