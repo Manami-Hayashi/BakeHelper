@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { UNITS, convert, compatibleUnits, formatNumber } from '../lib/units';
+import { theme } from '../lib/theme';
 import DismissKeyboardScroll from '../components/DismissKeyboardScroll';
 import ConverterRow from '../components/ConverterRow';
-
+import Card from '../components/Card';
 
 export default function ConvertScreen() {
   const [fromValue, setFromValue] = useState("");
@@ -34,55 +35,117 @@ export default function ConvertScreen() {
   
   const toValue = computeResult();
 
+  const handleSwap =() => {
+    const newFromValue = toValue;
+    setFromUnitId(toUnitId);
+    setToUnitId(fromUnitId);
+    setFromValue(newFromValue);
+  };
+
   return (
     <DismissKeyboardScroll>
         <View style={styles.container}>
+
+          <View style={styles.header}>
+            <View style={styles.iconBadge}  >
+              <MaterialCommunityIcons name="swap-horizontal" size={24} color={theme.colors.primaryDark} />
+            </View>
           <Text style={styles.title}>Convert</Text>
-          
+          </View>
+          <Text style={styles.subtitle}>Volume & Weight</Text>
           {/* FROM row */}
-        <ConverterRow
-          value={fromValue}
-          onValueChange={setFromValue}
-          unitId={fromUnitId}
-          onUnitChange={setFromUnitId}
-          units={UNITS}
-          editable={true}
-        />
-        
-        <MaterialCommunityIcons 
-          name="swap-vertical" 
-          size={28} 
-          color="#bbb" 
-          style={styles.swap} 
-        />
-        
-        <ConverterRow
-          value={toValue}
-          unitId={toUnitId}
-          onUnitChange={setToUnitId}
-          units={compatibleUnits(fromUnit)}
-          editable={false}
-        />
+          <Card style={styles.card}>
+            <Text style={styles.cardLabel}>From</Text>
+            <ConverterRow
+              value={fromValue}
+              onValueChange={setFromValue}
+              unitId={fromUnitId}
+              onUnitChange={setFromUnitId}
+              units={UNITS}
+              editable={true}
+            />
+          </Card>
+          <Pressable
+            onPress={handleSwap}
+            style={({ pressed }) => [
+              styles.swapButton,
+              pressed && styles.swapButtonPressed,
+            ]}>
+            <MaterialCommunityIcons name="swap-vertical" size={30} color={theme.colors.primary} />
+          </Pressable>
+          <Card style={styles.card}>
+            <Text style={styles.cardLabel}>To</Text>
+            <ConverterRow
+              value={toValue}
+              unitId={toUnitId}
+              onUnitChange={setToUnitId}
+              units={compatibleUnits(fromUnit)}
+              editable={false}
+            />
+          </Card> 
         </View>
     </DismissKeyboardScroll>
   );
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1 },
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.lg,
+    paddingTop: theme.spacing.xl,
+    maxWidth: 500,
+    width: '100%',
+    alignSelf: 'center',
+  },
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    gap: theme.spacing.sm,
+  },
+  iconBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: theme.radius.md,
+    backgroundColor: theme.colors.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: theme.fontSize.title,
     fontWeight: 'bold',
-    marginBottom: 40,
+    color: theme.colors.text,
   },
-  swap: {
-    marginVertical: 16,
+  subtitle: {
+    fontSize: theme.fontSize.label,
+    color: theme.colors.textMuted,
+    textAlign: 'center',
+    marginTop: theme.spacing.xs,
+    marginBottom: theme.spacing.xl,
+  },
+  card: {
+    marginBottom: theme.spacing.sm,
+  },
+  cardLabel: {
+    fontSize: theme.fontSize.label,
+    color: theme.colors.textFaint,
+    marginBottom: theme.spacing.sm,
+  },
+  swapButton: {
+    width: 44,
+    height: 44,
+    borderRadius: theme.radius.pill,
+    backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginVertical: theme.spacing.xs,
+    ...theme.shadow,
+  },
+  swapButtonPressed: {
+    backgroundColor: theme.colors.primarySoft,
   },
 });

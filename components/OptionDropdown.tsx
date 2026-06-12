@@ -32,11 +32,14 @@ export default function OptionDropdown({ selectedId, options, onChange, title ="
             <Pressable
             onPress={() => setIsOpen(true)}
             style={styles.trigger}>
-                <Text style={styles.triggerText}>{selectedLabel}</Text>
+                <Text style={styles.triggerText} numberOfLines={6}>{selectedLabel}</Text>
+                <View style={{ flex:1 }} />
                 <MaterialCommunityIcons
                 name="chevron-down"
-                size={20}
-                color="#888"/>
+                size={18}
+                color="#888"
+                style={styles.chevron}
+                />
             </Pressable>
 
             <Modal
@@ -93,22 +96,24 @@ export default function OptionDropdown({ selectedId, options, onChange, title ="
 
 const styles = StyleSheet.create({
   trigger: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     height: 60,
-    minWidth: 100,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     borderWidth: 2,
     borderColor: '#ddd',
     borderRadius: 12,
     backgroundColor: '#fff',
   },
   triggerText: {
-    fontSize: 20,
+    flex: 1,
+    fontSize: 18,
     fontWeight: '500',
     color: '#333',
-    marginRight: 8,
+  },
+  chevron: {
+    marginLeft: 6,
   },
   backdrop: {
     flex: 1,
@@ -120,7 +125,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     maxHeight: '70%',
   },
   handle: {

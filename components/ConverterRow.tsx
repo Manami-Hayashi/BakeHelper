@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+    width: '100%',
   },
   input: {
-    width: 140,
+    flex: 1,
     height: 60,
     borderWidth: 2,
     borderColor: '#ddd',
